@@ -1,54 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMK Informatika Sumedang</title>
-    <!-- link : style -->
-    <link rel="stylesheet" href="style/style .css">
-    <link rel="stylesheet" href="style/skyperstyle.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate" />
+<title>Pendaftaran Berhasil — Eskul Focus Media</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  (function () {
+    var saved = localStorage.getItem('fm_theme');
+    var theme = saved || 'dark';
+    if (theme === 'light') document.documentElement.classList.remove('dark');
+    else document.documentElement.classList.add('dark');
+
+    // Access guard: this page only exists for users who have registered
+    if (localStorage.getItem('fm_registered') !== 'true') {
+      window.location.replace('index.html');
+    }
+  })();
+
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          body: ['"Inter"', 'sans-serif'],
+        },
+        colors: {
+          brand: {
+            50: '#eef3ff', 100: '#dbe6ff', 200: '#b8cdff', 300: '#8caeff',
+            400: '#5f87f5', 500: '#3d63e0', 600: '#2e4bc2', 700: '#25399a',
+            800: '#1c2b74', 900: '#141f54',
+          },
+        },
+        keyframes: {
+          spinslow: { to: { transform: 'rotate(360deg)' } },
+          spinslowrev: { to: { transform: 'rotate(-360deg)' } },
+          floatup: {
+            '0%': { opacity: 0, transform: 'translateY(14px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' },
+          },
+          pop: {
+            '0%': { transform: 'scale(0.6)', opacity: 0 },
+            '60%': { transform: 'scale(1.08)', opacity: 1 },
+            '100%': { transform: 'scale(1)', opacity: 1 },
+          },
+        },
+        animation: {
+          spinslow: 'spinslow 40s linear infinite',
+          spinslowrev: 'spinslowrev 55s linear infinite',
+          floatup: 'floatup .6s cubic-bezier(.16,1,.3,1) both',
+          pop: 'pop .55s cubic-bezier(.16,1,.3,1) both',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+  .bg-app { background-color: #05070d; }
+  html:not(.dark) .bg-app { background-color: #f5f7fc; }
+
+  .bg-card { background-color: rgba(17, 22, 38, 0.72); border-color: rgba(93, 128, 255, 0.18); }
+  html:not(.dark) .bg-card { background-color: rgba(255,255,255,0.85); border-color: rgba(61, 99, 224, 0.15); }
+
+  .txt-main { color: #f3f5fb; }
+  html:not(.dark) .txt-main { color: #0c1329; }
+
+  .txt-muted { color: #9aa4c4; }
+  html:not(.dark) .txt-muted { color: #4a5578; }
+
+  .ring-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(93,128,255,0.35) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  .toggle-thumb { transition: transform .3s cubic-bezier(.16,1,.3,1); }
+  .dark .toggle-thumb { transform: translateX(20px); }
+</style>
 </head>
-<body>
+<body class="bg-app txt-main min-h-screen ring-grid antialiased">
 
-    <!-- Header and Navigation -->
-    <nav>
-        <div class="nav-container">
-            <!-- Logo Website -->
-            <a href="" class="nav-profile">
-                <img src="icon.png" alt="Profile" >
-                <p>SMK Informatika <spam class="text-blue">Sumedang</p>
-            </a>
-
-            <!-- Desktop Navigation -->
-             <div class="nav-navigation">
-                 <ul class="navbar-nav">
-                     <li><a href="image/data.txt">Beranda</a></li>
-                     <li><a href="">Profil</a></li>
-                     <li><a href="">Berita</a></li>
-                     <li><a href="">Artikel</a></li>
-                     <li><a href="">Karya</a></li>
-                 </ul>
-                <span class="h-border"></span>
-                <a href="#" class="nav-login">Masuk <spam class="icon-arrow">-></spam></a>
-            </div>
-
-            <!-- Hamburger Navigation -->
-             <button class="navbar-hamburger">==</button>
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-app/70 border-b" style="border-color: rgba(93,128,255,0.14)">
+    <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="Focus Media" class="w-9 h-9 rounded-full ring-1 ring-brand-400/40" />
+        <div class="leading-none">
+          <p class="font-display font-bold tracking-tight text-[15px] sm:text-base">FOCUS MEDIA</p>
+          <p class="text-[10px] txt-muted tracking-[0.2em] uppercase">Ekstrakurikuler</p>
         </div>
+      </div>
+
+      <button id="themeToggle" type="button" aria-label="Ganti tema terang / gelap"
+        class="relative w-12 h-7 rounded-full flex items-center px-1 bg-brand-900/60 border border-brand-400/30 hover:border-brand-400/60 transition-colors">
+        <span class="toggle-thumb w-5 h-5 rounded-full bg-gradient-to-br from-brand-300 to-brand-600 shadow flex items-center justify-center">
+          <i id="themeIcon" class="fa-solid fa-moon text-[10px] text-white"></i>
+        </span>
+      </button>
     </nav>
+  </header>
 
-    <!-- section : Hero Home -->
-    
+  <section class="relative overflow-hidden min-h-[calc(100vh-64px)] flex items-center">
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-70">
+      <svg class="w-[560px] h-[560px] animate-spinslow" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="92" stroke="#3d63e0" stroke-width="3" stroke-dasharray="180 120" stroke-linecap="round" opacity="0.3"/>
+      </svg>
+      <svg class="absolute w-[460px] h-[460px] animate-spinslowrev" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="78" stroke="#e8ecff" stroke-width="3" stroke-dasharray="140 160" stroke-linecap="round" opacity="0.2"/>
+      </svg>
+    </div>
 
-    <!-- script js -->
-    <script src="js/script.js"></script>
+    <div class="relative max-w-xl mx-auto px-6 text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-brand-500/15 border border-brand-400/30 flex items-center justify-center animate-pop">
+        <i class="fa-solid fa-check text-3xl text-brand-400"></i>
+      </div>
+
+      <h1 class="font-display font-bold text-3xl sm:text-4xl mt-7 animate-floatup" style="animation-delay:.1s">
+        Pendaftaran Berhasil!
+      </h1>
+      <p id="nameLine" class="mt-3 txt-muted text-sm sm:text-base animate-floatup" style="animation-delay:.15s"></p>
+      <p class="mt-4 txt-muted text-sm leading-relaxed animate-floatup" style="animation-delay:.2s">
+        Terima kasih sudah mendaftar di Eskul Focus Media. Data kamu sudah kami terima —
+        pantau terus pengumuman dari pembina untuk info seleksi dan jadwal orientasi berikutnya.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3 animate-floatup" style="animation-delay:.25s">
+        <span class="inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-card border">
+          <i class="fa-regular fa-clock text-brand-400"></i> Status: Terdaftar
+        </span>
+        <span class="inline-flex items-center gap-2 text-xs px-4 py-2 rounded-full bg-card border">
+          <i class="fa-solid fa-video text-brand-400"></i> Focus Media
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center pb-8 text-[11px] txt-muted">
+    &copy; <span id="year"></span> Eskul Focus Media — Semua hak dilindungi.
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('#year').text(new Date().getFullYear());
+
+      try {
+        var data = JSON.parse(localStorage.getItem('fm_registered_data') || '{}');
+        if (data && data.nama) {
+          $('#nameLine').text('Halo, ' + data.nama + ' — pendaftaranmu sudah tersimpan.');
+        }
+      } catch (e) {}
+
+      function reflectThemeIcon() {
+        var isDark = document.documentElement.classList.contains('dark');
+        $('#themeIcon').attr('class', isDark ? 'fa-solid fa-moon text-[10px] text-white' : 'fa-solid fa-sun text-[10px] text-white');
+      }
+      reflectThemeIcon();
+
+      $('#themeToggle').on('click', function () {
+        var html = document.documentElement;
+        html.classList.toggle('dark');
+        var mode = html.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('fm_theme', mode);
+        reflectThemeIcon();
+      });
+    });
+
+    // Block reaching this page (via back/forward cache) if not registered
+    window.addEventListener('pageshow', function () {
+      if (localStorage.getItem('fm_registered') !== 'true') {
+        window.location.replace('index.html');
+      }
+    });
+  </script>
 </body>
 </html>
-
-<!-- navbar icon -->
-<!-- navbar hamburger -->
-<!-- navbar button -->
-<!-- navbar nav -->
-
-
-<!-- hero content -->
