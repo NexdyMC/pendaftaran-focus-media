@@ -1,142 +1,425 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Focus Media</title>
-    
-    <!-- Library Tailwind CSS (Via CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            // Aktifkan mode gelap berdasarkan preferensi sistem (otomatis)
-            darkMode: 'media', 
-            theme: {
-                extend: {
-                    colors: {
-                        brand: '#3b82f6', // Warna biru khas
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Library jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate" />
+  <title>Eskul Focus Media — Pendaftaran Anggota Baru</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Anti flash-of-wrong-content: decide theme + access BEFORE paint
+    (function () {
+      var saved = localStorage.getItem('fm_theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefersDark ? 'dark' : 'dark'); // default dark to match brand
+      if (theme === 'light') document.documentElement.classList.remove('dark');
+      else document.documentElement.classList.add('dark');
 
-    <style>
-        /* Custom scrollbar supaya lebih rapi */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        @media (prefers-color-scheme: dark) {
-            ::-webkit-scrollbar-thumb { background: #475569; }
-        }
-    </style>
+      // Access guard: if already registered, this page is off-limits -> done.html
+      if (localStorage.getItem('fm_registered') === 'true') {
+        window.location.replace('done.html');
+      }
+    })();
+
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef3ff',
+              100: '#dbe6ff',
+              200: '#b8cdff',
+              300: '#8caeff',
+              400: '#5f87f5',
+              500: '#3d63e0',
+              600: '#2e4bc2',
+              700: '#25399a',
+              800: '#1c2b74',
+              900: '#141f54',
+            },
+          },
+          keyframes: {
+            spinslow: {
+              to: {
+                transform: 'rotate(360deg)'
+              }
+            },
+            spinslowrev: {
+              to: {
+                transform: 'rotate(-360deg)'
+              }
+            },
+            floatup: {
+              '0%': {
+                opacity: 0,
+                transform: 'translateY(14px)'
+              },
+              '100%': {
+                opacity: 1,
+                transform: 'translateY(0)'
+              },
+            },
+          },
+          animation: {
+            spinslow: 'spinslow 40s linear infinite',
+            spinslowrev: 'spinslowrev 55s linear infinite',
+            floatup: 'floatup .6s cubic-bezier(.16,1,.3,1) both',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      transition: background-color .35s ease, color .35s ease;
+    }
+
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Light/Dark surface tokens */
+    .bg-app {
+      background-color: #05070d;
+    }
+
+    html:not(.dark) .bg-app {
+      background-color: #f5f7fc;
+    }
+
+    .bg-card {
+      background-color: rgba(17, 22, 38, 0.72);
+      border-color: rgba(93, 128, 255, 0.18);
+    }
+
+    html:not(.dark) .bg-card {
+      background-color: rgba(255, 255, 255, 0.85);
+      border-color: rgba(61, 99, 224, 0.15);
+    }
+
+    .txt-main {
+      color: #f3f5fb;
+    }
+
+    html:not(.dark) .txt-main {
+      color: #0c1329;
+    }
+
+    .txt-muted {
+      color: #9aa4c4;
+    }
+
+    html:not(.dark) .txt-muted {
+      color: #4a5578;
+    }
+
+    .ring-grid {
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(93, 128, 255, 0.35) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    input,
+    textarea {
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(150, 170, 255, 0.22);
+    }
+
+    html:not(.dark) input,
+    html:not(.dark) textarea {
+      background-color: rgba(61, 99, 224, 0.05);
+      border: 1px solid rgba(61, 99, 224, 0.2);
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #5f87f5;
+      box-shadow: 0 0 0 3px rgba(95, 135, 245, 0.25);
+    }
+
+    ::selection {
+      background: #3d63e0;
+      color: white;
+    }
+
+    .field-error {
+      border-color: #f36b6b !important;
+      box-shadow: 0 0 0 3px rgba(243, 107, 107, 0.2) !important;
+    }
+
+    .toggle-thumb {
+      transition: transform .3s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .dark .toggle-thumb {
+      transform: translateX(20px);
+    }
+
+    #toast {
+      transition: transform .35s cubic-bezier(.16, 1, .3, 1), opacity .35s ease;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300 min-h-screen flex items-center justify-center p-4 font-sans">
 
-    <!-- Container Form -->
-    <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-        <div class="p-6 sm:p-8">
-            
-            <!-- Header Section -->
-            <div class="text-center mb-8">
-                <!-- Logo -->
-                <img src="logo.png" alt="Focus Media Logo" class="w-24 h-24 mx-auto rounded-full object-cover shadow-sm mb-4 border-4 border-gray-50 dark:border-gray-700">
-                
-                <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">Focus Media</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Siap berkarya di dunia jurnalistik dan publikasi digital? Isi form di bawah ini untuk bergabung dan kembangkan potensi terbaikmu bersama kami!
-                </p>
-            </div>
+<body class="bg-app txt-main min-h-screen ring-grid selection:bg-brand-500 antialiased">
 
-            <!-- 
-                Form Registration 
-                Action mengarah ke Google Forms url formResponse
-                Target di-set ke iframe tersembunyi agar halaman tidak pindah setelah submit
-            -->
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-            <form id="regForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfZdSSMzSpt25aN87ahwVGhXI0b3CmhwGkqd49zT-pnwZ5mbA/formResponse" method="POST" target="hidden_iframe" class="space-y-5">
-                
-                <!-- Input 1: Nama -->
-                <div>
-                    <label for="nama" class="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">Nama Lengkap</label>
-                    <input type="text" id="nama" name="entry.324454032" required placeholder="Masukkan nama lengkapmu" 
-                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-brand focus:border-brand dark:bg-gray-700 dark:text-white transition-all outline-none">
-                </div>
-
-                <!-- Input 2: Kelas -->
-                <div>
-                    <label for="kelas" class="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">Kelas</label>
-                    <input type="text" id="kelas" name="entry.1339392649" required placeholder="Contoh: 11 RPL 1" 
-                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-brand focus:border-brand dark:bg-gray-700 dark:text-white transition-all outline-none">
-                </div>
-
-                <!-- Input 3: Hobi -->
-                <div>
-                    <label for="hobi" class="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">Hobi</label>
-                    <input type="text" id="hobi" name="entry.971481285" required placeholder="Apa kegiatan favoritmu di waktu luang?" 
-                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-brand focus:border-brand dark:bg-gray-700 dark:text-white transition-all outline-none">
-                </div>
-
-                <!-- Input 4: Alasan -->
-                <div>
-                    <label for="alasan" class="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">Alasan Bergabung</label>
-                    <textarea id="alasan" name="entry.769401316" required rows="3" placeholder="Ceritakan kenapa kamu tertarik masuk Focus Media..." 
-                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-brand focus:border-brand dark:bg-gray-700 dark:text-white transition-all outline-none resize-none"></textarea>
-                </div>
-
-                <!-- Tombol Submit -->
-                <div class="pt-3">
-                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-4 focus:ring-blue-500/50 flex justify-center items-center">
-                        <span>Kirim Pendaftaran</span>
-                    </button>
-                </div>
-
-                <!-- Notifikasi Sukses (Disembunyikan secara default) -->
-                <div id="successAlert" class="hidden mt-4 p-4 bg-green-100 dark:bg-green-900/40 border border-green-400 dark:border-green-800 text-green-800 dark:text-green-300 rounded-lg text-center text-sm font-medium">
-                    🎉 Pendaftaran Berhasil! Terima kasih sudah mendaftar.
-                </div>
-            </form>
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-app/70 border-b" style="border-color: rgba(93,128,255,0.14)">
+    <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="Focus Media" class="w-9 h-9 rounded-full ring-1 ring-brand-400/40" />
+        <div class="leading-none">
+          <p class="font-display font-bold tracking-tight text-[15px] sm:text-base">FOCUS MEDIA</p>
+          <p class="text-[10px] txt-muted tracking-[0.2em] uppercase">Ekstrakurikuler</p>
         </div>
+      </div>
+
+      <!-- Theme toggle -->
+      <button id="themeToggle" type="button" aria-label="Ganti tema terang / gelap"
+        class="relative w-12 h-7 rounded-full flex items-center px-1 bg-brand-900/60 border border-brand-400/30 hover:border-brand-400/60 transition-colors">
+        <span
+          class="toggle-thumb w-5 h-5 rounded-full bg-gradient-to-br from-brand-300 to-brand-600 shadow flex items-center justify-center">
+          <i id="themeIcon" class="fa-solid fa-moon text-[10px] text-white"></i>
+        </span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <!-- decorative rotating rings, echoing the logo -->
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-70">
+      <svg class="w-[560px] h-[560px] -translate-y-6 animate-spinslow" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="92" stroke="#3d63e0" stroke-width="3" stroke-dasharray="180 120"
+          stroke-linecap="round" opacity="0.35" />
+      </svg>
+      <svg class="absolute w-[460px] h-[460px] animate-spinslowrev" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="78" stroke="#e8ecff" stroke-width="3" stroke-dasharray="140 160"
+          stroke-linecap="round" opacity="0.25" />
+      </svg>
     </div>
 
-    <!-- Script Logika jQuery -->
-    <script>
-        $(document).ready(function() {
-            var submitted = false;
-            
-            // Ketika form disubmit
-            $('#regForm').on('submit', function() {
-                submitted = true;
-                
-                // Ubah tombol jadi status loading
-                $('#submitBtn')
-                    .html('<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Mengirim...')
-                    .prop('disabled', true)
-                    .addClass('opacity-75 cursor-not-allowed');
-            });
+    <div class="relative max-w-4xl mx-auto px-5 sm:px-8 pt-16 pb-10 sm:pt-24 sm:pb-14 text-center">
+      <span
+        class="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase txt-muted mb-5 animate-floatup">
+        <i class="fa-solid fa-video text-brand-400"></i> Pendaftaran Dibuka
+      </span>
+      <h1 class="font-display font-bold text-4xl sm:text-6xl tracking-tight animate-floatup"
+        style="animation-delay:.05s">
+        Eskul <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-brand-400 to-white">Focus
+          Media</span>
+      </h1>
+      <p class="mt-4 sm:mt-5 text-sm sm:text-base txt-muted max-w-xl mx-auto animate-floatup"
+        style="animation-delay:.1s">
+        Formulir pendaftaran siswa baru yang ingin bergabung dan berkembang bersama
+        tim jurnalistik, broadcast, dan kreatif sekolah.
+      </p>
+    </div>
+  </section>
 
-            // Ketika iframe selesai loading (tanda form Google berhasil menerima data)
-            $('#hidden_iframe').on('load', function() {
-                if (submitted) {
-                    // Kosongkan form kembali
-                    $('#regForm')[0].reset();
-                    
-                    // Kembalikan tombol seperti semula
-                    $('#submitBtn')
-                        .html('<span>Kirim Pendaftaran</span>')
-                        .prop('disabled', false)
-                        .removeClass('opacity-75 cursor-not-allowed');
-                    
-                    // Tampilkan pesan sukses selama 4 detik
-                    $('#successAlert').slideDown().delay(4000).slideUp();
-                    
-                    submitted = false;
-                }
-            });
+  <!-- FORM -->
+  <main class="relative max-w-2xl mx-auto px-5 sm:px-8 pb-24">
+    <form id="fmForm" novalidate
+      class="bg-card border rounded-2xl sm:rounded-3xl p-6 sm:p-9 shadow-2xl shadow-black/20 animate-floatup"
+      style="animation-delay:.15s">
+
+      <div class="flex items-center gap-3 mb-7">
+        <div class="w-10 h-10 rounded-xl bg-brand-500/15 flex items-center justify-center">
+          <i class="fa-solid fa-clipboard-list text-brand-400"></i>
+        </div>
+        <div>
+          <h2 class="font-display font-semibold text-lg">Data Pendaftar</h2>
+          <p class="text-xs txt-muted">Isi dengan data yang benar dan sesuai</p>
+        </div>
+      </div>
+
+      <div class="space-y-5">
+        <div>
+          <label for="nama" class="block text-xs font-medium txt-muted mb-1.5 tracking-wide uppercase">
+            Nama Lengkap
+          </label>
+          <input type="text" id="nama" name="entry.324454032" placeholder="cth. Febri Pratama"
+            class="w-full rounded-xl px-4 py-3 text-sm txt-main placeholder:text-slate-500" />
+          <p class="err-msg hidden text-xs text-red-400 mt-1.5">Nama lengkap wajib diisi.</p>
+        </div>
+
+        <div>
+          <label for="kelas" class="block text-xs font-medium txt-muted mb-1.5 tracking-wide uppercase">
+            Kelas
+          </label>
+          <input type="text" id="kelas" name="entry.1339392649" placeholder="cth. 12 RPL 1"
+            class="w-full rounded-xl px-4 py-3 text-sm txt-main placeholder:text-slate-500" />
+          <p class="err-msg hidden text-xs text-red-400 mt-1.5">Kelas wajib diisi.</p>
+        </div>
+
+        <div>
+          <label for="alasan" class="block text-xs font-medium txt-muted mb-1.5 tracking-wide uppercase">
+            Alasan Bergabung
+          </label>
+          <textarea id="alasan" name="entry.971481285" rows="3"
+            placeholder="Ceritakan alasanmu ingin bergabung dengan Focus Media"
+            class="w-full rounded-xl px-4 py-3 text-sm txt-main placeholder:text-slate-500 resize-none"></textarea>
+          <p class="err-msg hidden text-xs text-red-400 mt-1.5">Alasan wajib diisi.</p>
+        </div>
+
+        <div>
+          <label for="harapan" class="block text-xs font-medium txt-muted mb-1.5 tracking-wide uppercase">
+            Harapan untuk Focus Media
+          </label>
+          <textarea id="harapan" name="entry.769401316" rows="3"
+            placeholder="cth. Menjadi Focus Media yang aktif dan terkenal"
+            class="w-full rounded-xl px-4 py-3 text-sm txt-main placeholder:text-slate-500 resize-none"></textarea>
+          <p class="err-msg hidden text-xs text-red-400 mt-1.5">Harapan wajib diisi.</p>
+        </div>
+      </div>
+
+      <button type="submit" id="submitBtn" class="mt-8 w-full rounded-xl py-3.5 font-display font-semibold text-sm tracking-wide
+               bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-400 hover:to-brand-600
+               text-white shadow-lg shadow-brand-900/40 transition-all active:scale-[.98]
+               flex items-center justify-center gap-2">
+        <span id="submitLabel">Daftar Sekarang</span>
+        <i id="submitSpinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
+      </button>
+
+      <p class="text-[11px] txt-muted text-center mt-4">
+        Data akan dikirim melalui formulir resmi Focus Media.
+      </p>
+    </form>
+  </main>
+
+  <footer class="text-center pb-8 text-[11px] txt-muted">
+    &copy; <span id="year"></span> Eskul Focus Media — Semua hak dilindungi.
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 translate-y-[-140%] opacity-0 z-50
+              bg-card border rounded-xl px-5 py-3 text-sm shadow-xl flex items-center gap-2">
+    <i class="fa-solid fa-circle-exclamation text-red-400"></i>
+    <span id="toastMsg">Mohon lengkapi semua data.</span>
+  </div>
+
+  <!-- Hidden iframe + hidden mirror form used to POST to Google Forms without leaving the page -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <form id="gformMirror" method="POST" target="hidden_iframe"
+    action="https://docs.google.com/forms/d/e/1FAIpQLSfZdSSMzSpt25aN87ahwVGhXI0b3CmhwGkqd49zT-pnwZ5mbA/formResponse"
+    style="display:none;">
+    <input type="text" name="entry.324454032" id="m_nama" />
+    <input type="text" name="entry.1339392649" id="m_kelas" />
+    <input type="text" name="entry.971481285" id="m_alasan" />
+    <input type="text" name="entry.769401316" id="m_harapan" />
+  </form>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $(function () {
+      $('#year').text(new Date().getFullYear());
+
+      /* ---------- THEME TOGGLE ---------- */
+      function reflectThemeIcon() {
+        var isDark = document.documentElement.classList.contains('dark');
+        $('#themeIcon').attr('class', isDark ? 'fa-solid fa-moon text-[10px] text-white' :
+          'fa-solid fa-sun text-[10px] text-white');
+      }
+      reflectThemeIcon();
+
+      $('#themeToggle').on('click', function () {
+        var html = document.documentElement;
+        html.classList.toggle('dark');
+        var mode = html.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('fm_theme', mode);
+        reflectThemeIcon();
+      });
+
+      /* ---------- VALIDATION + SUBMIT ---------- */
+      function showToast(msg) {
+        $('#toastMsg').text(msg);
+        var $t = $('#toast');
+        $t.removeClass('translate-y-[-140%] opacity-0').addClass('translate-y-0 opacity-100');
+        clearTimeout(window.__toastTimer);
+        window.__toastTimer = setTimeout(function () {
+          $t.removeClass('translate-y-0 opacity-100').addClass('translate-y-[-140%] opacity-0');
+        }, 2600);
+      }
+
+      function validate() {
+        var ok = true;
+        var fields = ['nama', 'kelas', 'alasan', 'harapan'];
+        fields.forEach(function (id) {
+          var $el = $('#' + id);
+          var $err = $el.closest('div').find('.err-msg');
+          if ($.trim($el.val()) === '') {
+            $el.addClass('field-error');
+            $err.removeClass('hidden');
+            ok = false;
+          } else {
+            $el.removeClass('field-error');
+            $err.addClass('hidden');
+          }
         });
-    </script>
+        return ok;
+      }
+
+      $('#fmForm').on('submit', function (e) {
+        e.preventDefault();
+
+        if (!validate()) {
+          showToast('Mohon lengkapi semua data sebelum mengirim.');
+          return;
+        }
+
+        var $btn = $('#submitBtn');
+        $btn.prop('disabled', true).addClass('opacity-70 cursor-not-allowed');
+        $('#submitLabel').text('Mengirim...');
+        $('#submitSpinner').removeClass('hidden');
+
+        // mirror values into the hidden Google Form and submit it through the iframe
+        $('#m_nama').val($('#nama').val());
+        $('#m_kelas').val($('#kelas').val());
+        $('#m_alasan').val($('#alasan').val());
+        $('#m_harapan').val($('#harapan').val());
+
+        document.getElementById('gformMirror').submit();
+
+        // give the POST a moment to reach Google before we lock the page
+        setTimeout(function () {
+          var payload = {
+            nama: $('#nama').val(),
+            kelas: $('#kelas').val(),
+            waktu: new Date().toISOString()
+          };
+          localStorage.setItem('fm_registered', 'true');
+          localStorage.setItem('fm_registered_data', JSON.stringify(payload));
+          window.location.replace('done.html');
+        }, 1300);
+      });
+    });
+
+    // If the browser restores this page from bfcache (back button), re-check access
+    window.addEventListener('pageshow', function (event) {
+      if (localStorage.getItem('fm_registered') === 'true') {
+        window.location.replace('done.html');
+      }
+    });
+  </script>
 </body>
+
 </html>
